@@ -14,3 +14,9 @@ a {
 * {
   box-sizing: border-box;
 }
+
+h2 {
+  padding: 0.5em;
+  text-align: center;
+  color: #bf0000;
+}

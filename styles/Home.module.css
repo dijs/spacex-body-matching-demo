@@ -14,10 +14,19 @@
   color: #2c3e50;
 }
 
-.mission {
+.mission,
+.rocket {
   padding: 0.5rem;
   background-color: #fff;
   border-radius: 0.5rem;
   margin: 0.5rem;
   color: #2c3e50;
+}
+
+.data {
+  display: flex;
+}
+
+.col {
+  flex: 1em;
 }

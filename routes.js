@@ -10,6 +10,9 @@ module.exports = new Router()
   .post('/graphql', ({ proxy }) => {
     proxy('graphql'); // forward posts requests to apollo unaltered
   })
+
+  // We will cache missions and rockets differently when available
+
   /*.graphqlOperation('GetMissions', ({ proxy, cache }) => {
     cache({
       edge: {
