@@ -6,4 +6,4 @@ module.exports = {
       hostHeader: 'api.spacex.land',
     },
   },
-};
+}

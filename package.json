@@ -6,9 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier '**/*' --write --ignore-unknown"
   },
-  "name": "my-next-app",
+  "name": "spacex-graphql-layer0",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -28,6 +29,7 @@
     "@layer0/prefetch": "3.16.4-next-1629197572-abc8db41.0",
     "@layer0/react": "3.16.4-next-1629197572-abc8db41.0",
     "eslint": "7.32.0",
-    "eslint-config-next": "11.0.1"
+    "eslint-config-next": "11.0.1",
+    "prettier": "^2.4.1"
   }
 }
