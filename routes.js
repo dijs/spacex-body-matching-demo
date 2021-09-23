@@ -7,19 +7,19 @@ module.exports = new Router()
   .match('/service-worker.js', ({ serviceWorker }) => {
     return serviceWorker('.next/static/service-worker.js')
   })
-  .post('/graphql', ({ proxy }) => {
-    proxy('graphql') // forward posts requests to apollo unaltered
-  })
-
-  // We will cache missions and rockets differently when available
-
-  /*.graphqlOperation('GetMissions', ({ proxy, cache }) => {
+  .graphqlOperation('GetMissions', ({ proxy, cache }) => {
     cache({
       edge: {
         maxAgeSeconds: 60 * 60,
         staleWhileRevalidateSeconds: 60 * 60 * 24, // this way stale items can still be prefetched
       },
-    });
-    proxy('graphql'); // forward posts requests to apollo unaltered
-  })*/
+    })
+    proxy('graphql') // forward posts requests to apollo unaltered
+  })
+  .graphqlOperation('GetRockets', ({ proxy, cache }) => {
+    cache({
+      edge: false,
+    })
+    proxy('graphql') // forward posts requests to apollo unaltered
+  })
   .use(nextRoutes) // automatically adds routes for all files under /pages
