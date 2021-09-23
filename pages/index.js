@@ -15,11 +15,11 @@ export default function Home() {
         <h1 className={styles.title}>🚀 To the Moon 🌙</h1>
         <div className={styles.data}>
           <div className={styles.col}>
-            <h2>Missions</h2>
+            <h2>Missions (Cached)</h2>
             <Missions />
           </div>
           <div className={styles.col}>
-            <h2>Rockets</h2>
+            <h2>Rockets (Uncached)</h2>
             <Rockets />
           </div>
         </div>
