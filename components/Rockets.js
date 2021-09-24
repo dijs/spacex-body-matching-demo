@@ -30,7 +30,6 @@ const Rockets = () => {
     }
   }, [loading, error])
 
-  // if (loading) return null
   if (error) return <p>Error :(</p>
 
   const rockets = [...data.rockets].map(Rocket)
@@ -38,11 +37,9 @@ const Rockets = () => {
   return (
     <div className={styles.col}>
       <h2 className={styles.header}>Rockets (Uncached)</h2>
-      {timing && (
-        <div className={styles.timing}>
-          Took <b>{timing}</b> ms to fetch
-        </div>
-      )}
+      <div className={styles.timing}>
+        Took <b>{timing || '--'}</b> ms to fetch
+      </div>
       <div className={styles.actions}>
         <button onClick={() => refetch()}>Refetch</button>
       </div>

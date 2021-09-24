@@ -51,11 +51,9 @@ const Missions = () => {
   return (
     <div className={styles.col}>
       <h2 className={styles.header}>Missions (Cached on Edge)</h2>
-      {timing && (
-        <div className={styles.timing}>
-          Took <b>{timing}</b> ms to fetch
-        </div>
-      )}
+      <div className={styles.timing}>
+        Took <b>{timing || '--'}</b> ms to fetch
+      </div>
       <div className={styles.actions}>
         <button
           onClick={() => {

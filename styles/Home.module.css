@@ -17,10 +17,12 @@
 .mission,
 .rocket {
   padding: 0.5rem;
-  background-color: #fff;
   border-radius: 0.5rem;
-  margin: 0.5rem;
+  margin: 1rem;
   color: #2c3e50;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px #f2f2f2, -5px -5px 10px #ffffff;
+  min-height: 200px;
 }
 
 .data {
@@ -28,7 +30,7 @@
 }
 
 .col {
-  flex: 1em;
+  width: 50vw;
 }
 
 .header {
