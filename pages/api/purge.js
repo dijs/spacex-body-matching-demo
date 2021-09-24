@@ -3,7 +3,7 @@ const fetch = require('node-fetch')
 const deployToken = process.env.DEPLOY_TOKEN
 const team = 'richard-vanderdys'
 const site = 'spacex-graphql-layer0'
-const environment = 'staging'
+const environment = 'default'
 const paths = ['/*']
 
 export default async function purge(_req, res) {
