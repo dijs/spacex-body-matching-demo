@@ -4,7 +4,7 @@ const deployToken = process.env.DEPLOY_TOKEN
 const team = 'richard-vanderdys'
 const site = 'spacex-graphql-layer0'
 const environment = 'staging'
-const paths = ['*']
+const paths = ['/*']
 
 export default async function purge(_req, res) {
   const resp = await fetch('https://app.layer0.co/api/v1/clear-cache', {
