@@ -36,12 +36,16 @@ const Rockets = () => {
 
   return (
     <div className={styles.col}>
-      <h2 className={styles.header}>Rockets (Uncached)</h2>
+      <h2 className={styles.header}>
+        Rockets<small> (Uncached)</small>
+      </h2>
       <div className={styles.timing}>
         Took <b>{timing || '--'}</b> ms to fetch
       </div>
       <div className={styles.actions}>
-        <button onClick={() => refetch()}>Refetch</button>
+        <button onClick={() => refetch()} disabled={loading}>
+          {loading ? 'Refetching...' : 'Refetch'}
+        </button>
       </div>
       {rockets}
     </div>

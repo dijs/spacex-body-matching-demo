@@ -50,17 +50,15 @@ const Missions = () => {
 
   return (
     <div className={styles.col}>
-      <h2 className={styles.header}>Missions (Cached on Edge)</h2>
+      <h2 className={styles.header}>
+        Missions <small>(Cached on Edge)</small>
+      </h2>
       <div className={styles.timing}>
         Took <b>{timing || '--'}</b> ms to fetch
       </div>
       <div className={styles.actions}>
-        <button
-          onClick={() => {
-            refetch()
-          }}
-        >
-          Refetch
+        <button onClick={() => refetch()} disabled={loading}>
+          {loading ? 'Refetching...' : 'Refetch'}
         </button>
         <button onClick={purge}>Purge Cache</button>
       </div>
