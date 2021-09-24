@@ -30,3 +30,28 @@
 .col {
   flex: 1em;
 }
+
+.header {
+  text-align: center;
+  color: #bf0000;
+}
+
+.timing {
+  text-align: center;
+  color: #ff6300;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  margin: 1em;
+}
+
+.actions button {
+  border: 0;
+  background: #004b64;
+  color: white;
+  padding: 0.5em;
+  margin: 0 0.5em;
+  border-radius: 0.2em;
+}

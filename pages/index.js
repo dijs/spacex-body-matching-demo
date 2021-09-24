@@ -14,14 +14,8 @@ export default function Home() {
       <main className={styles.main}>
         <h1 className={styles.title}>🚀 To the Moon 🌙</h1>
         <div className={styles.data}>
-          <div className={styles.col}>
-            <h2>Missions (Cached)</h2>
-            <Missions />
-          </div>
-          <div className={styles.col}>
-            <h2>Rockets (Uncached)</h2>
-            <Rockets />
-          </div>
+          <Missions />
+          <Rockets />
         </div>
       </main>
     </div>

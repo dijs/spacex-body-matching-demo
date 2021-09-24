@@ -1,31 +1,74 @@
 import styles from '@/styles/Home.module.css'
 import { useQuery } from '@apollo/client'
 import { MISSIONS } from '@/lib/query'
+import { useEffect, useRef, useState } from 'react'
+
+const Mission = ({
+  mission_name,
+  launch_date_local,
+  launch_site: { site_name_long },
+  rocket: { rocket_name },
+}) => (
+  <div className={styles.mission} key={mission_name}>
+    <h3>{mission_name}</h3>
+    <small>{new Date(launch_date_local).toLocaleDateString()}</small>
+    <p>
+      {rocket_name} will launch from {site_name_long}
+    </p>
+  </div>
+)
 
 const Missions = () => {
-  const { loading, error, data } = useQuery(MISSIONS)
+  const startTime = useRef(Date.now())
+  const [timing, setTiming] = useState(0)
+  const {
+    loading,
+    error,
+    data = { launchesPast: [] },
+    refetch,
+  } = useQuery(MISSIONS, { fetchPolicy: 'network-only', notifyOnNetworkStatusChange: true })
 
-  if (loading) return null
+  useEffect(() => {
+    if (loading) {
+      startTime.current = Date.now()
+    } else {
+      if (!error) {
+        setTiming(Date.now() - startTime.current)
+      }
+    }
+  }, [loading, error])
+
   if (error) return <p>Error :(</p>
 
-  return [...data.launchesPast]
+  const missions = [...data.launchesPast]
     .sort((a, b) => new Date(b.launch_date_local) - new Date(a.launch_date_local))
-    .map(
-      ({
-        mission_name,
-        launch_date_local,
-        launch_site: { site_name_long },
-        rocket: { rocket_name },
-      }) => (
-        <div className={styles.mission} key={mission_name}>
-          <h3>{mission_name}</h3>
-          <small>{new Date(launch_date_local).toLocaleDateString()}</small>
-          <p>
-            {rocket_name} will launch from {site_name_long}
-          </p>
+    .map(Mission)
+
+  async function purge() {
+    await fetch('/api/purge')
+  }
+
+  return (
+    <div className={styles.col}>
+      <h2 className={styles.header}>Missions (Cached on Edge)</h2>
+      {timing && (
+        <div className={styles.timing}>
+          Took <b>{timing}</b> ms to fetch
         </div>
-      )
-    )
+      )}
+      <div className={styles.actions}>
+        <button
+          onClick={() => {
+            refetch()
+          }}
+        >
+          Refetch
+        </button>
+        <button onClick={purge}>Purge Cache</button>
+      </div>
+      {missions}
+    </div>
+  )
 }
 
 export default Missions

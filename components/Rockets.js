@@ -1,19 +1,54 @@
 import styles from '@/styles/Home.module.css'
 import { useQuery } from '@apollo/client'
 import { ROCKETS } from '@/lib/query'
+import { useRef, useState, useEffect } from 'react'
+
+const Rocket = ({ description, name }) => (
+  <div className={styles.rocket} key={name}>
+    <h3>{name}</h3>
+    <p>{description}</p>
+  </div>
+)
 
 const Rockets = () => {
-  const { loading, error, data } = useQuery(ROCKETS)
+  const startTime = useRef(Date.now())
+  const [timing, setTiming] = useState(0)
+  const {
+    loading,
+    error,
+    data = { rockets: [] },
+    refetch,
+  } = useQuery(ROCKETS, { fetchPolicy: 'network-only', notifyOnNetworkStatusChange: true })
 
-  if (loading) return null
+  useEffect(() => {
+    if (loading) {
+      startTime.current = Date.now()
+    } else {
+      if (!error) {
+        setTiming(Date.now() - startTime.current)
+      }
+    }
+  }, [loading, error])
+
+  // if (loading) return null
   if (error) return <p>Error :(</p>
 
-  return [...data.rockets].map(({ description, active, name }) => (
-    <div className={styles.rocket} key={name}>
-      <h3>{name}</h3>
-      <p>{description}</p>
+  const rockets = [...data.rockets].map(Rocket)
+
+  return (
+    <div className={styles.col}>
+      <h2 className={styles.header}>Rockets (Uncached)</h2>
+      {timing && (
+        <div className={styles.timing}>
+          Took <b>{timing}</b> ms to fetch
+        </div>
+      )}
+      <div className={styles.actions}>
+        <button onClick={() => refetch()}>Refetch</button>
+      </div>
+      {rockets}
     </div>
-  ))
+  )
 }
 
 export default Rockets
