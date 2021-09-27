@@ -1,22 +1,9 @@
-import styles from '@/styles/Home.module.css'
 import { useQuery } from '@apollo/client'
 import { MISSIONS } from '@/lib/query'
 import { useEffect, useRef, useState } from 'react'
-
-const Mission = ({
-  mission_name,
-  launch_date_local,
-  launch_site: { site_name_long },
-  rocket: { rocket_name },
-}) => (
-  <div className={styles.mission} key={mission_name}>
-    <h3>{mission_name}</h3>
-    <small>{new Date(launch_date_local).toLocaleDateString()}</small>
-    <p>
-      {rocket_name} will launch from {site_name_long}
-    </p>
-  </div>
-)
+import Button from './Button'
+import Mission from './Mission'
+import Loader from './Loader'
 
 const Missions = () => {
   const startTime = useRef(Date.now())
@@ -27,6 +14,7 @@ const Missions = () => {
     data = { launchesPast: [] },
     refetch,
   } = useQuery(MISSIONS, { fetchPolicy: 'network-only', notifyOnNetworkStatusChange: true })
+  const [purging, setPurging] = useState(false)
 
   useEffect(() => {
     if (loading) {
@@ -42,27 +30,49 @@ const Missions = () => {
 
   const missions = [...data.launchesPast]
     .sort((a, b) => new Date(b.launch_date_local) - new Date(a.launch_date_local))
-    .map(Mission)
+    .filter((item, index) => index <= 2)
+    .map((item) => <Mission {...item} key={item.mission_name} />)
 
   async function purge() {
+    setPurging(true)
     await fetch('/api/purge')
+      .then((res) => res.json())
+      .then((res) => {
+        setPurging(false)
+      })
   }
 
   return (
-    <div className={styles.col}>
-      <h2 className={styles.header}>
-        Missions <small>(Cached on Edge)</small>
-      </h2>
-      <div className={styles.timing}>
-        Took <b>{timing || '--'}</b> ms to fetch
+    <div className="flex flex-col">
+      <div className="flex flex-row items-center justify-between">
+        <h1 className="flex flex-row items-center">
+          <span className="text-2xl">Missions</span> <small>(Cached on Edge)</small>
+        </h1>
+        <div className="px-2 py-1 border shadow rounded">
+          <b className="text-gray-500">{timing || '--'}ms</b>
+        </div>
       </div>
-      <div className={styles.actions}>
-        <button onClick={() => refetch()} disabled={loading}>
-          {loading ? 'Refetching...' : 'Refetch'}
-        </button>
-        <button onClick={purge}>Purge Cache</button>
+      <div className="mb-5 mt-5 flex flex-row items-center justify-between">
+        <Button
+          text={loading ? 'Refetching...' : 'Refetch'}
+          callback={refetch}
+          disabled={loading}
+          bgColor={loading ? '#e95495' : '#35274B'}
+        />
+        <Button
+          text={purging ? 'Purging Cache...' : 'Purge Cache'}
+          callback={purge}
+          disabled={purging}
+          bgColor={!purging ? '#e95495' : '#004b64'}
+        />
       </div>
-      {missions}
+      {loading ? (
+        <div className="w-full p-5 flex flex-col items-center justify-center">
+          <Loader textColor="#e95495" />
+        </div>
+      ) : (
+        missions
+      )}
     </div>
   )
 }

@@ -13,9 +13,13 @@ function MyApp({ Component, pageProps }) {
     link: createHttpLink({ uri: '/graphql' }, apolloCreateHttpLink),
   })
   return (
-    <ApolloProvider client={client}>
-      <Component {...pageProps} />
-    </ApolloProvider>
+    <div className="bg-white text-black font-display flex flex-col items-center">
+      <ApolloProvider client={client}>
+        <div className="py-10 w-full max-w-[90vw] lg:max-w-[75vw] sm:px-10 flex flex-col">
+          <Component {...pageProps} />
+        </div>
+      </ApolloProvider>
+    </div>
   )
 }
 
