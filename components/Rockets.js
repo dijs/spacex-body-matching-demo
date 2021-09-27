@@ -1,14 +1,9 @@
-import styles from '@/styles/Home.module.css'
 import { useQuery } from '@apollo/client'
 import { ROCKETS } from '@/lib/query'
 import { useRef, useState, useEffect } from 'react'
-
-const Rocket = ({ description, name }) => (
-  <div className={styles.rocket} key={name}>
-    <h3>{name}</h3>
-    <p>{description}</p>
-  </div>
-)
+import Button from './Button'
+import Rocket from './Rocket'
+import Loader from './Loader'
 
 const Rockets = () => {
   const startTime = useRef(Date.now())
@@ -32,22 +27,34 @@ const Rockets = () => {
 
   if (error) return <p>Error :(</p>
 
-  const rockets = [...data.rockets].map(Rocket)
+  const rockets = [...data.rockets].slice(0, 3).map((item) => <Rocket {...item} key={item.name} />)
 
   return (
-    <div className={styles.col}>
-      <h2 className={styles.header}>
-        Rockets<small> (Uncached)</small>
-      </h2>
-      <div className={styles.timing}>
-        Took <b>{timing || '--'}</b> ms to fetch
+    <div className="flex flex-col">
+      <div className="flex flex-row items-center justify-between">
+        <h1 className="flex flex-row items-center">
+          <span className="text-2xl">Rockets</span>
+          <small>(Uncached)</small>
+        </h1>
+        <div className="px-2 py-1 border shadow rounded">
+          <b className="text-gray-500">{timing || '--'}ms</b>
+        </div>
       </div>
-      <div className={styles.actions}>
-        <button onClick={() => refetch()} disabled={loading}>
-          {loading ? 'Refetching...' : 'Refetch'}
-        </button>
+      <div className="mb-5 mt-5 flex flex-row items-center justify-between">
+        <Button
+          text={loading ? 'Refetching...' : 'Refetch'}
+          callback={refetch}
+          disabled={loading}
+          bgColor={loading ? '#e95495' : '#35274B'}
+        />
       </div>
-      {rockets}
+      {loading ? (
+        <div className="w-full p-5 flex flex-col items-center justify-center">
+          <Loader textColor="#35274B" />
+        </div>
+      ) : (
+        rockets
+      )}
     </div>
   )
 }
