@@ -27,9 +27,7 @@ const Rockets = () => {
 
   if (error) return <p>Error :(</p>
 
-  const rockets = [...data.rockets]
-    .filter((item, index) => index <= 2)
-    .map((item) => <Rocket {...item} key={item.name} />)
+  const rockets = [...data.rockets].slice(0, 3).map((item) => <Rocket {...item} key={item.name} />)
 
   return (
     <div className="flex flex-col">

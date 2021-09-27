@@ -30,7 +30,7 @@ const Missions = () => {
 
   const missions = [...data.launchesPast]
     .sort((a, b) => new Date(b.launch_date_local) - new Date(a.launch_date_local))
-    .filter((item, index) => index <= 2)
+    .slice(0, 3)
     .map((item) => <Mission {...item} key={item.mission_name} />)
 
   async function purge() {
